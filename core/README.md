@@ -18,10 +18,9 @@ It provides three main objects:
 - `User` is a ground scenario
 
 <div align="center">
-    <a href=https://github.com/nav-solutions/rinex-cli/blob/main/plots/front-page/map.png>
-        <img src="https://raw.githubusercontent.com/nav-solutions/.github/master/logos/logo2.jpg" alt="Logo">
-    </a>
+    <img src="https://raw.githubusercontent.com/nav-solutions/.github/master/logos/logo3.png" width=750px alt="Logo">
 </div>
+
 
 API
 ===
