@@ -34,6 +34,7 @@ impl Simulation {
     /// - epoch: simulation start time as [Epoch]
     /// - step: simulation step [Duration]
     /// - timescale: reference [TimeScale]
+    /// - almanac: [Almanac] definition for this session
     pub fn new(epoch: Epoch, step: Duration, timescale: TimeScale, almanac: Almanac) -> Self {
         let epoch = epoch.to_time_scale(timescale);
         Self {
@@ -46,6 +47,9 @@ impl Simulation {
     }
 
     /// Initiates a new [Simulation] with system time "now".
+    /// - step: simulation step [Duration]
+    /// - timescale: reference [TimeScale]
+    /// - almanac: [Almanac] definition for this session
     pub fn now(
         step: Duration,
         timescale: TimeScale,
