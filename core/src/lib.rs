@@ -8,7 +8,7 @@ mod clock;
 mod satellite;
 mod simulation;
 mod state;
-// mod user;
+mod user;
 
 pub mod constants;
 

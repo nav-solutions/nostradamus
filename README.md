@@ -11,7 +11,7 @@ Nostradamus
 [![License](https://img.shields.io/badge/license-AGPLv3.0-orange?style=for-the-badge)](https://github.com/nav-solutions/gnss-rtk/blob/main/LICENSE)
 
 `nostradamus` is an open-source framework to simulate and predict the state of a constellation
-of satellites. To achieve this task, it combines the [Nyx-Space spatial solver](https://nyx-space.com)
+of satellites. To achieve this task, it combines the [Nyx-Space spatial solver](https://nyxspace.com)
 and its own temporal solver.
 
 This framework is divided into a two parts:
