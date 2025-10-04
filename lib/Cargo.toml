@@ -1,0 +1,25 @@
+[package]
+name = "nostradamus-lib"
+version = { workspace = true }
+authors = { workspace = true }
+edition = { workspace = true }
+homepage = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+description = "Core of the Nostradamus framework"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-ars = ["--cfg", "docrs", "--generate-link-to-definition"]
+
+[package.metadata]
+msrv = "1.83"
+
+[features]
+default = ["dep:rinex", "dep:sp3"] # rinex or SP3 preset by default
+
+[dependencies]
+anise = { workspace = true }
+hifitime = { workspace = true }
+sp3 = { version = "1.4", optional = true }
+rinex = { version = "0.21", features = ["nav"], optional = true }

@@ -1,0 +1,26 @@
+[workspace]
+resolver = "2"
+members = ["lib"]
+
+[workspace.package]
+version = "0.0.1-alpha"
+edition = "2021"
+authors = ["Guillaume W. Bres <guillaume.bressaix@gmail.com>"]
+description = "Nostradamus: constellation simulation and prediction"
+homepage = "https://github.com/nav-solutions/"
+repository = "https://github.com/nav-solutions/nostradamus"
+categories = ["science", "simulation"]
+license = "AGPL-3"
+readme = "README.md"
+
+exclude = ["data"]
+
+[workspace.dependencies]
+anise = "0.6"
+hifitime = "4"
+nalgebra = "0.33"
+gnss-rs = "2.5"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
