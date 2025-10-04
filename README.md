@@ -21,7 +21,7 @@ This framework is divided into a two parts:
 through crates.io
 
 <div align="center">
-    <img src="https://raw.githubusercontent.com/nav-solutions/.github/master/logos/logo3.jpg" width=250px alt="Logo">
+    <img src="https://raw.githubusercontent.com/nav-solutions/.github/master/logos/logo3.png" width=250px alt="Logo">
 </div>
 
 Contributions
