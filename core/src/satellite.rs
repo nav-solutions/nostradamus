@@ -42,6 +42,7 @@ impl Satellite {
             self.epoch(),
             self.frame(),
         )?;
+
         Ok(self)
     }
 
@@ -49,6 +50,25 @@ impl Satellite {
     /// from ECEF position in kilometers.
     pub fn with_position_km(mut self, x_km: f64, y_km: f64, z_km: f64) -> Self {
         self.spacecraft.orbit = Orbit::from_position(x_km, y_km, z_km, self.epoch(), self.frame());
+        self
+    }
+
+    /// Copies and returns updated [Satellite] model with new drag area and Cd
+    pub fn with_drag(mut self, drag_area_m2: f64, cd: f64) -> Self {
+        self.spacecraft = self.spacecraft.with_drag(drag_area_m2, cd);
+        self
+    }
+
+    /// Copies and returns updated [Satellite] model with new solar radial pressure
+    /// area and Cr
+    pub fn with_srp(mut self, srp_area_m2: f64, cr: f64) -> Self {
+        self.spacecraft = self.spacecraft.with_srp(srp_area_m2, cr);
+        self
+    }
+
+    /// Copies and returns updated [Satellite] model with new dry-mass in kilograms.
+    pub fn with_dry_mass(mut self, mass_kg: f64) -> Self {
+        self.spacecraft = self.spacecraft.with_dry_mass(mass_kg);
         self
     }
 }
