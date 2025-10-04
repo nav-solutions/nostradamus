@@ -1,4 +1,4 @@
-use crate::{Duration, Epoch, Orbit};
+use crate::{Duration, Epoch};
 
 /// Modeled and predictable [State]s
 pub trait State: Copy + Clone {
@@ -15,7 +15,7 @@ pub trait State: Copy + Clone {
     fn predict(self, step: Duration) -> Self;
 
     /// Observe a new [S]tate at specific [Epoch]
-    fn observe(&mut self, epoch: Epoch, state: Self);
+    fn observe(&mut self, state: Self);
 
     /// Moves to new [S]tate either forward or backwards, of given step [Duration].
     fn predict_mut(&mut self, step: Duration) {

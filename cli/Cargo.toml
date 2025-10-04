@@ -19,4 +19,6 @@ hifitime = { workspace = true }
 nostradamus-core = { workspace = true }
 sp3 = { workspace = true, optional = true }
 rinex = { workspace = true, optional = true }
-anise = { workspace = true, features = ["embed-ephem"] }
+
+# anise = { workspace = true, features = ["embed-ephem"] }
+anise = { workspace = true }

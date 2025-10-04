@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["core"]
+members = ["core", "cli"]
 
 [workspace.package]
 version = "0.0.1-alpha"
@@ -22,6 +22,8 @@ nyx-space = "2.1"
 gnss-rs = "2.5"
 sp3 = "1.4"
 rinex = "0.21"
+
+nostradamus-core = { version = "0.0.1-alpha", path = "core" }
 
 [profile.release]
 lto = "thin"

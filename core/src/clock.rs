@@ -1,8 +1,8 @@
-use crate::{Duration, Epoch, Frame, State};
+use crate::{Duration, Epoch, State};
 
-use core::f64::consts::PI;
+// use core::f64::consts::PI;
 
-const PI_2: f64 = PI * 2.0;
+// const PI_2: f64 = PI * 2.0;
 
 #[derive(Debug, Copy, Clone, PartialEq, PartialOrd)]
 pub struct ClockState {
@@ -43,7 +43,7 @@ impl State for ClockState {
         self
     }
 
-    fn observe(&mut self, epoch: Epoch, state: Self) {
+    fn observe(&mut self, state: Self) {
         *self = state;
         self.predicted = false;
     }
