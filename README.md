@@ -1,5 +1,3 @@
-<div style="background-image: url('https://raw.githubusercontent.com/nav-solutions/.github/master/logos/logo3.jpg')">
-
 Nostradamus
 ===========
 
@@ -21,6 +19,12 @@ This framework is divided into a two parts:
 - the [core library](core/) which is open-source and can be used to perform POD elsewhere
 - the [command-line tool](cli/) allows to initiate a simulation. It is available worldwide
 through crates.io
+
+<div align="center">
+    <a href=https://github.com/nav-solutions/rinex-cli/blob/main/plots/front-page/map.png>
+        <img src="https://raw.githubusercontent.com/nav-solutions/.github/master/logos/logo2.jpg" alt="Logo">
+    </a>
+</div>
 
 Contributions
 =============
