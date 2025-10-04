@@ -91,6 +91,10 @@ impl State for Clock {
     fn predicted(&self) -> bool {
         self.predicted
     }
+
+    fn epoch(&self) -> Epoch {
+        self.epoch
+    }
 }
 
 impl Clock {}

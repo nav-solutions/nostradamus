@@ -8,6 +8,9 @@ pub trait State: Copy + Clone {
     /// Generates a random yet physically correct [State].
     fn random(epoch: Epoch) -> Self;
 
+    /// Returns current [Epoch] of this [State]
+    fn epoch(&self) -> Epoch;
+
     /// Returns true when this [State] does not result from an actual observation.
     fn predicted(&self) -> bool;
 

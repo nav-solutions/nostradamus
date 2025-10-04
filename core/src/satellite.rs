@@ -1,4 +1,9 @@
-use crate::prelude::{Clock, Duration, Epoch, Orbit, State, EARTH_J2000};
+use crate::{
+    constants::EARTH_ANGULAR_VEL_DEG_S,
+    prelude::{Clock, Duration, Epoch, Frame, Orbit, State, EARTH_J2000},
+};
+
+use anise::astro::PhysicsResult;
 
 use nyx_space::{md::prelude::GuidanceMode, Spacecraft};
 
@@ -16,23 +21,47 @@ pub struct Satellite {
 }
 
 impl Satellite {
-    // /// Copies and returns updated [SatelliteState] with new
-    // /// coordinates
-    // pub fn with_latlongalt_km(mut self, latlongalt_km: (f64, f64, f64)) -> Self {
-    //     self.orbit = Orbit::from_latlongalt(latlongalt_km, self.epoch, self.frame);
-    //     self
-    // }
+    /// Returns the [Frame] this [Satellite] is expressed-in
+    fn frame(&self) -> Frame {
+        self.spacecraft.orbit.frame
+    }
+
+    /// Copies and returns updated [Satellite] state with new orbital position,
+    /// from latitude longitude coordinates in degrees, and altitude in kilometers.
+    pub fn with_latlongalt_km(
+        mut self,
+        latitude_deg: f64,
+        longitude_deg: f64,
+        height_km: f64,
+    ) -> PhysicsResult<Self> {
+        self.spacecraft.orbit = Orbit::try_latlongalt(
+            latitude_deg,
+            longitude_deg,
+            height_km,
+            EARTH_ANGULAR_VEL_DEG_S,
+            self.epoch(),
+            self.frame(),
+        )?;
+        Ok(self)
+    }
+
+    /// Copies and returns updated [Satellite] state with new orbital position,
+    /// from ECEF position in kilometers.
+    pub fn with_position_km(mut self, x_km: f64, y_km: f64, z_km: f64) -> Self {
+        self.spacecraft.orbit = Orbit::from_position(x_km, y_km, z_km, self.epoch(), self.frame());
+        self
+    }
 }
 
 impl State for Satellite {
     fn default(epoch: Epoch) -> Self {
+        // model:
+        // Dry mass: 1_500 kg
+        // SRP   Cr: 1.3
+        // SRP area: 25 (m^2)
+        // Drag  Cd: 2.2
+        // DragArea: 25  (m^2)
         let orbit = Orbit::from_position(0.0, 0.0, 0.0, epoch, EARTH_J2000); // TODO
-                                                                             // model:
-                                                                             // Dry mass: 1_500 kg
-                                                                             // SRP   Cr: 1.3
-                                                                             // SRP area: 25 (m^2)
-                                                                             // Drag  Cd: 2.2
-                                                                             // DragArea: 25  (m^2)
         Self {
             predicted: false,
             clock: Clock::default(epoch),
@@ -48,13 +77,13 @@ impl State for Satellite {
     }
 
     fn random(epoch: Epoch) -> Self {
+        // model:
+        // Dry mass: 1_500 kg
+        // SRP   Cr: 1.3
+        // SRP area: 25 (m^2)
+        // Drag  Cd: 2.2
+        // DragArea: 25  (m^2)
         let orbit = Orbit::from_position(0.0, 0.0, 0.0, epoch, EARTH_J2000); // TODO
-                                                                             // model:
-                                                                             // Dry mass: 1_500 kg
-                                                                             // SRP   Cr: 1.3
-                                                                             // SRP area: 25 (m^2)
-                                                                             // Drag  Cd: 2.2
-                                                                             // DragArea: 25  (m^2)
         Self {
             predicted: false,
             clock: Clock::random(epoch),
@@ -67,6 +96,10 @@ impl State for Satellite {
                 .with_guidance_mode(GuidanceMode::Coast)
                 .with_prop_mass(0.0),
         }
+    }
+
+    fn epoch(&self) -> Epoch {
+        self.spacecraft.orbit.epoch
     }
 
     fn predicted(&self) -> bool {
