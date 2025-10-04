@@ -17,8 +17,8 @@ It provides three main objects:
 - `Simulation` is the process that will eventually get deployed
 - `User` is a ground scenario
 
-<div align="center">
-    <img src="https://raw.githubusercontent.com/nav-solutions/.github/master/logos/logo3.png" width=750px alt="Logo">
+<div align="left">
+    <img src="https://raw.githubusercontent.com/nav-solutions/.github/master/logos/logo3.png" width=500px alt="Logo">
 </div>
 
 
