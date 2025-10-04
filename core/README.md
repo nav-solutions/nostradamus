@@ -12,9 +12,6 @@ nostradamus-core
 
 `nostradamus-core` is the core library for simulation and orbital prediction.
 
-The library achieves its task by combining the `nyx-space` library, for orbitat determination (OD)
-and temporal prediction by implementing its own clock model.
-
 API
 ===
 

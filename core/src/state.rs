@@ -1,4 +1,4 @@
-use crate::{Duration, Epoch};
+use crate::prelude::{Duration, Epoch};
 
 /// Modeled and predictable [State]s
 pub trait State: Copy + Clone {
@@ -8,7 +8,7 @@ pub trait State: Copy + Clone {
     /// Generates a random yet physically correct [State].
     fn random(epoch: Epoch) -> Self;
 
-    /// Returns true this [State] was predicted
+    /// Returns true when this [State] does not result from an actual observation.
     fn predicted(&self) -> bool;
 
     /// Predict a new [S]tate either forward or backwards, of given step [Duration].

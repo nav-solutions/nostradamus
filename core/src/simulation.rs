@@ -1,72 +1,68 @@
 use hifitime::errors::HifitimeError;
 
-use crate::{Duration, Epoch, SatelliteState, TimeScale, UserState};
+use crate::prelude::{Almanac, Duration, Epoch, TimeScale};
 
 pub struct Simulation {
-    /// Constellation
-    constellation: Constellation,
+    /// Reference [TimeScale].
+    /// All satellite states are referred to this [TimeScale].
+    /// Any satellite we cannot reference will not contribute to the simulation process.
+    timescale: TimeScale,
 
     /// Simulation start [Epoch]
-    start_t: Epoch,
+    start_epoch: Epoch,
 
     /// Current [Epoch]
-    current_t: Epoch,
+    epoch: Epoch,
 
-    /// Simulation time step (time axis quantization)
+    /// [Simulation] time-axis quantization as [Duration]
     step: Duration,
 
-    /// User
-    user: UserState,
-
-    /// Satellites
-    satellites: Vec<SatelliteState>,
+    /// [Simulation] [Almanac]
+    almanac: Almanac,
 }
 
 impl std::fmt::Display for Simulation {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        format!("sim-run - duration={}", self.duration())
+        write!(f, "({}) elapsed={}", self.epoch, self.duration())
     }
 }
 
 impl Simulation {
     /// Initiates a new [Simulation].
-    pub fn new(
-        start_t: Epoch,
-        user: UserState,
-        satellites: Vec<SatelliteState>,
-        step: Duration,
-    ) -> Self {
+    ///
+    /// ## Input
+    /// - epoch: simulation start time as [Epoch]
+    /// - step: simulation step [Duration]
+    /// - timescale: reference [TimeScale]
+    pub fn new(epoch: Epoch, step: Duration, timescale: TimeScale, almanac: Almanac) -> Self {
+        let epoch = epoch.to_time_scale(timescale);
         Self {
             step,
-            user,
-            start_t,
-            satellites,
-            current_t: start_t,
+            epoch,
+            timescale,
+            almanac,
+            start_epoch: epoch,
         }
     }
 
     /// Initiates a new [Simulation] with system time "now".
     pub fn now(
-        user: UserState,
-        satellites: Vec<SatelliteState>,
         step: Duration,
+        timescale: TimeScale,
+        almanac: Almanac,
     ) -> Result<Self, HifitimeError> {
-        let now = Epoch::now()?;
-        Ok(Self::new(now, user, satellites, step))
+        let now = Epoch::now()?.to_time_scale(timescale);
+
+        Ok(Self::new(now, step, timescale, almanac))
     }
 
-    // /// Initiates a new [Simulation] from a RINEX file
-    // pub fn from_rinex(rinex: &Rinex) -> Self {
-    //     Self {
-
-    //     }
-    // }
-
-    /// Returns duration of this [Simulation] run
+    /// Returns total [Duration] of this [Simulation] so far.
     pub fn duration(&self) -> Duration {
-        self.current_t - self.start_t
+        self.epoch - self.start_epoch
     }
 
-    /// Returns the timescale being simulated
-    pub fn timescale(&self) -> TimeScale {}
+    /// Returns reference [TimeScale] for this [Simulation]
+    pub fn timescale(&self) -> TimeScale {
+        self.timescale
+    }
 }

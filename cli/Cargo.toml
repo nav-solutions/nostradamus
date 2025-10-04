@@ -1,5 +1,14 @@
 [package]
 name = "nostradamus-cli"
+version = { workspace = true }
+authors = { workspace = true }
+edition = { workspace = true }
+homepage = { workspace = true }
+license = { workspace = true }
+readme = { workspace = true }
+repository = { workspace = true }
+categories = { workspace = true }
+description = { workspace = true }
 
 [dependencies]
 log = "0.4"
