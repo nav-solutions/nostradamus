@@ -21,9 +21,7 @@ This framework is divided into a two parts:
 through crates.io
 
 <div align="center">
-    <a href=https://github.com/nav-solutions/rinex-cli/blob/main/plots/front-page/map.png>
-        <img src="https://raw.githubusercontent.com/nav-solutions/.github/master/logos/logo2.jpg" alt="Logo">
-    </a>
+    <img src="https://raw.githubusercontent.com/nav-solutions/.github/master/logos/logo3.jpg" width=250px alt="Logo">
 </div>
 
 Contributions
