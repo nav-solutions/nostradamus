@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["lib"]
+members = ["core"]
 
 [workspace.package]
 version = "0.0.1-alpha"
@@ -10,16 +10,18 @@ description = "Nostradamus: constellation simulation and prediction"
 homepage = "https://github.com/nav-solutions/"
 repository = "https://github.com/nav-solutions/nostradamus"
 categories = ["science", "simulation"]
+keywords = ["geo", "navigation", "timing"]
 license = "AGPL-3"
 readme = "README.md"
-
-exclude = ["data"]
+exclude = ["data/*"]
 
 [workspace.dependencies]
 anise = "0.6"
 hifitime = "4"
-nalgebra = "0.33"
+nyx-space = "2.1"
 gnss-rs = "2.5"
+sp3 = "1.4"
+rinex = "0.21"
 
 [profile.release]
 lto = "thin"

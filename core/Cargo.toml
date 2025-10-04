@@ -1,12 +1,13 @@
 [package]
-name = "nostradamus-lib"
+name = "nostradamus-core"
 version = { workspace = true }
 authors = { workspace = true }
 edition = { workspace = true }
 homepage = { workspace = true }
 license = { workspace = true }
+readme = { workspace = true }
 repository = { workspace = true }
-description = "Core of the Nostradamus framework"
+categories = { workspace = true }
 
 [package.metadata.docs.rs]
 all-features = true
@@ -16,11 +17,12 @@ rustdoc-ars = ["--cfg", "docrs", "--generate-link-to-definition"]
 msrv = "1.83"
 
 [features]
-default = ["dep:rinex", "dep:sp3"] # rinex or SP3 preset by default
+default = ["dep:rinex", "dep:sp3"] # rinex and SP3 preset by default
 
 [dependencies]
 anise = { workspace = true }
 gnss-rs = { workspace = true }
 hifitime = { workspace = true }
-sp3 = { version = "1.4", optional = true }
-rinex = { version = "0.21", features = ["nav"], optional = true }
+nyx-space = { workspace = true }
+sp3 = { workspace = true, optional = true }
+rinex = { workspace = true, optional = true }
