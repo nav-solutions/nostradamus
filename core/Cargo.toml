@@ -8,6 +8,7 @@ license = { workspace = true }
 readme = { workspace = true }
 repository = { workspace = true }
 categories = { workspace = true }
+description = { workspace = true }
 
 [package.metadata.docs.rs]
 all-features = true

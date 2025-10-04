@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["core"]
+members = ["core", "cli"]
 
 [workspace.package]
 version = "0.0.1-alpha"
@@ -11,17 +11,18 @@ homepage = "https://github.com/nav-solutions/"
 repository = "https://github.com/nav-solutions/nostradamus"
 categories = ["science", "simulation"]
 keywords = ["geo", "navigation", "timing"]
-license = "AGPL-3"
+license = "AGPL-3.0-or-later"
 readme = "README.md"
 exclude = ["data/*"]
 
 [workspace.dependencies]
-anise = "0.6"
+anise = "0.5"
 hifitime = "4"
-nyx-space = "2.1"
 gnss-rs = "2.5"
 sp3 = "1.4"
 rinex = "0.21"
+nyx-space = "2.1"
+nostradamus-core = { version = "0.0.1-alpha", path = "core" }
 
 [profile.release]
 lto = "thin"

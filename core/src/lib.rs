@@ -1,15 +1,24 @@
+#![doc(
+    html_logo_url = "https://raw.githubusercontent.com/nav-solutions/.github/master/logos/logo2.jpg"
+)]
+#![doc = include_str!("../../README.md")]
+#![cfg_attr(docsrs, feature(doc_cfg))]
+
 mod clock;
-// mod satellite;
-// mod simulation;
+mod satellite;
+mod simulation;
 mod state;
-// mod user;
+mod user;
 
-pub use clock::*;
-// pub use satellite::*;
-// pub use simulation::*;
-pub use state::*;
-// pub use user::*;
+pub mod constants;
 
-pub use anise::constants::frames::EARTH_J2000;
-pub use anise::prelude::{Almanac, Frame, Orbit};
-pub use hifitime::prelude::{Duration, Epoch, TimeScale};
+pub mod prelude {
+    pub use anise::{
+        constants::frames::EARTH_J2000,
+        prelude::{Almanac, Frame, Orbit},
+    };
+
+    pub use hifitime::prelude::{Duration, Epoch, TimeScale};
+
+    pub use crate::{clock::Clock, satellite::Satellite, simulation::Simulation, state::State};
+}

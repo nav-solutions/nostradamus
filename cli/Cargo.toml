@@ -1,5 +1,14 @@
 [package]
 name = "nostradamus-cli"
+version = { workspace = true }
+authors = { workspace = true }
+edition = { workspace = true }
+homepage = { workspace = true }
+license = { workspace = true }
+readme = { workspace = true }
+repository = { workspace = true }
+categories = { workspace = true }
+description = { workspace = true }
 
 [dependencies]
 log = "0.4"
@@ -19,4 +28,4 @@ hifitime = { workspace = true }
 nostradamus-core = { workspace = true }
 sp3 = { workspace = true, optional = true }
 rinex = { workspace = true, optional = true }
-anise = { workspace = true, features = ["embed-ephem"] }
+anise = { workspace = true, features = ["embed_ephem"] }
