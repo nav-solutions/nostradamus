@@ -20,6 +20,7 @@ default = ["dep:rinex", "dep:sp3"] # rinex or SP3 preset by default
 
 [dependencies]
 anise = { workspace = true }
+gnss-rs = { workspace = true }
 hifitime = { workspace = true }
 sp3 = { version = "1.4", optional = true }
 rinex = { version = "0.21", features = ["nav"], optional = true }
