@@ -1,6 +1,6 @@
 use crate::{
     errors::Error,
-    prelude::{Clock, Orbit, Satellite, EARTH_J2000},
+    prelude::{Clock, Duration, Epoch, Orbit, Satellite, TimeScale, EARTH_J2000},
     traits::{Scenario, State},
 };
 
@@ -14,6 +14,12 @@ use nyx_space::{cosmic::GuidanceMode, Spacecraft};
 pub struct SP3Scenario {
     /// Total number of states
     size: usize,
+
+    /// Sampling period
+    step: Duration,
+
+    /// Timescale
+    timescale: TimeScale,
 
     /// pointer
     ptr: usize,
@@ -99,6 +105,8 @@ impl SP3Scenario {
             ptr: 0,
             size: satellites.len(),
             satellites,
+            step: sp3.header.sampling_period,
+            timescale: sp3.header.timescale,
         })
     }
 }
@@ -116,21 +124,40 @@ impl Iterator for SP3Scenario {
     }
 }
 
-impl<S: State> Scenario<S> for SP3Scenario {
+impl Scenario for SP3Scenario {
+    fn step(&self) -> Duration {
+        self.step
+    }
+
+    fn timescale(&self) -> TimeScale {
+        self.timescale
+    }
+
     fn size(&self) -> usize {
         self.size
     }
 
-    fn remaining(&self) -> usize {
+    fn start(&self) -> Epoch {
+        self.satellites[0].epoch()
+    }
+
+    fn epoch(&self) -> Epoch {
+        self.satellites[self.ptr - 1].epoch()
+    }
+
+    fn end(&self) -> Epoch {
+        self.satellites[self.size() - 1].epoch()
+    }
+
+    fn remaining_size(&self) -> usize {
         self.size - self.ptr
     }
 
-    fn insert(&mut self, state: S) {
-        // TODO
-    }
-
-    fn with_state(mut self, state: S) -> Self {
-        // TODO
-        self
+    fn remaining_duration(&self) -> Duration {
+        if self.remaining_size() > 0 {
+            self.end() - self.satellites[self.ptr].epoch()
+        } else {
+            Duration::ZERO
+        }
     }
 }

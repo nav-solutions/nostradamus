@@ -1,72 +1,34 @@
 use hifitime::errors::HifitimeError;
 
-use crate::prelude::{Almanac, Duration, Epoch, TimeScale};
+use crate::prelude::{Almanac, Duration, Epoch, Scenario, State, TimeScale};
 
-pub struct Simulation {
-    /// Reference [TimeScale].
-    /// All satellite states are referred to this [TimeScale].
-    /// Any satellite we cannot reference will not contribute to the simulation process.
-    timescale: TimeScale,
-
-    /// Simulation start [Epoch]
-    start_epoch: Epoch,
-
-    /// Current [Epoch]
-    epoch: Epoch,
-
-    /// [Simulation] time-axis quantization as [Duration]
-    step: Duration,
-
-    /// [Simulation] [Almanac]
+pub struct Simulation<S: Scenario> {
+    /// [Almanac] configuration
     almanac: Almanac,
+
+    /// Simulation [Scenario]
+    pub scenario: S,
 }
 
-impl std::fmt::Display for Simulation {
+impl<S: Scenario> std::fmt::Display for Simulation<S> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "({}) elapsed={}", self.epoch, self.duration())
+        write!(
+            f,
+            "({}) elapsed={} (dt={})",
+            self.scenario.epoch(),
+            self.scenario.elapsed(),
+            self.scenario.step()
+        )
     }
 }
 
-impl Simulation {
+impl<S: Scenario> Simulation<S> {
     /// Initiates a new [Simulation].
     ///
     /// ## Input
-    /// - epoch: simulation start time as [Epoch]
-    /// - step: simulation step [Duration]
-    /// - timescale: reference [TimeScale]
+    /// - scenario: simulation [Scenario]
     /// - almanac: [Almanac] definition for this session
-    pub fn new(epoch: Epoch, step: Duration, timescale: TimeScale, almanac: Almanac) -> Self {
-        let epoch = epoch.to_time_scale(timescale);
-        Self {
-            step,
-            epoch,
-            timescale,
-            almanac,
-            start_epoch: epoch,
-        }
-    }
-
-    /// Initiates a new [Simulation] with system time "now".
-    /// - step: simulation step [Duration]
-    /// - timescale: reference [TimeScale]
-    /// - almanac: [Almanac] definition for this session
-    pub fn now(
-        step: Duration,
-        timescale: TimeScale,
-        almanac: Almanac,
-    ) -> Result<Self, HifitimeError> {
-        let now = Epoch::now()?.to_time_scale(timescale);
-
-        Ok(Self::new(now, step, timescale, almanac))
-    }
-
-    /// Returns total [Duration] of this [Simulation] so far.
-    pub fn duration(&self) -> Duration {
-        self.epoch - self.start_epoch
-    }
-
-    /// Returns reference [TimeScale] for this [Simulation]
-    pub fn timescale(&self) -> TimeScale {
-        self.timescale
+    pub fn new(scenario: S, almanac: Almanac) -> Self {
+        Self { scenario, almanac }
     }
 }

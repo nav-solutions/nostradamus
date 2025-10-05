@@ -22,8 +22,10 @@ pub mod prelude {
 
     pub use hifitime::prelude::{Duration, Epoch, TimeScale};
 
+    pub use gnss_rs::prelude::{Constellation, SV};
+
     pub use crate::{
-        clock::Clock, errors::*, observer::Observer, satellite::Satellite, simulation::Simulation,
+        clock::Clock, errors::*, observer::Observer, satellite::*, simulation::Simulation,
         traits::*,
     };
 }

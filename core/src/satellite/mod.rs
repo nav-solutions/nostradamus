@@ -13,6 +13,13 @@ mod sp3;
 #[cfg(feature = "sp3")]
 pub use sp3::*;
 
+// RINEX scenarios (Satellites provider)
+#[cfg(feature = "rinex")]
+mod rinex;
+
+#[cfg(feature = "rinex")]
+pub use rinex::*;
+
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Satellite {
     /// True when current state is predicted
