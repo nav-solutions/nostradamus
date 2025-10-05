@@ -3,7 +3,7 @@ resolver = "2"
 members = ["core", "cli"]
 
 [workspace.package]
-version = "0.0.1-alpha"
+version = "0.0.1-beta"
 edition = "2021"
 authors = ["Guillaume W. Bres <guillaume.bressaix@gmail.com>"]
 description = "Nostradamus: constellation simulation and prediction"
