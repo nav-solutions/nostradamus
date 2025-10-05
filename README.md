@@ -4,7 +4,7 @@ Nostradamus
 [![Rust](https://github.com/nav-solutions/nostradamus/actions/workflows/rust.yml/badge.svg)](https://github.com/nav-solutions/nostradamus/actions/workflows/rust.yml)
 [![Rust](https://github.com/nav-solutions/nostradamus/actions/workflows/daily.yml/badge.svg)](https://github.com/nav-solutions/nostradamus/actions/workflows/daily.yml)
 [![crates.io](https://docs.rs/nostradamus-core/badge.svg)](https://docs.rs/nostradamus-core/)
-[![crates.io](https://docs.rs/nostradamus-cli/badge.svg)](https://docs.rs/nostradamus-cli/)
+[![crates.io](https://img.shields.io/crates/v/nostradamus-core.svg)](https://crates.io/crates/nostradamus-core)
 [![crates.io](https://img.shields.io/crates/d/nostradamus-core.svg)](https://crates.io/crates/nostradamus-core)
 
 [![MRSV](https://img.shields.io/badge/MSRV-1.83.0-orange?style=for-the-badge)](https://github.com/rust-lang/rust/releases/tag/1.83.0)
