@@ -1,9 +1,9 @@
 use crate::{
     constants::EARTH_ANGULAR_VEL_DEG_S,
-    prelude::{Clock, Duration, Epoch, Frame, Orbit, State, EARTH_J2000},
+    prelude::{
+        Clock, Duration, Epoch, Frame, Orbit, PhysicsResult, Predictable, State, EARTH_J2000,
+    },
 };
-
-use anise::astro::PhysicsResult;
 
 use nyx_space::{md::prelude::GuidanceMode, Spacecraft};
 
@@ -13,7 +13,6 @@ pub struct Satellite {
     predicted: bool,
 
     /// [Spacecraft] model from nyx.
-    /// The orbital state contains the [Epoch] of observation/preduction.
     spacecraft: Spacecraft,
 
     /// Satellite on-board [Clock]
@@ -21,7 +20,7 @@ pub struct Satellite {
 }
 
 impl Satellite {
-    /// Returns the [Frame] this [Satellite] is expressed-in
+    /// Returns the [Frame] this [Satellite] is expressed in.
     fn frame(&self) -> Frame {
         self.spacecraft.orbit.frame
     }
@@ -82,6 +81,7 @@ impl State for Satellite {
         // Drag  Cd: 2.2
         // DragArea: 25  (m^2)
         let orbit = Orbit::from_position(0.0, 0.0, 0.0, epoch, EARTH_J2000); // TODO
+
         Self {
             predicted: false,
             clock: Clock::default(epoch),
@@ -104,6 +104,7 @@ impl State for Satellite {
         // Drag  Cd: 2.2
         // DragArea: 25  (m^2)
         let orbit = Orbit::from_position(0.0, 0.0, 0.0, epoch, EARTH_J2000); // TODO
+
         Self {
             predicted: false,
             clock: Clock::random(epoch),
@@ -122,14 +123,27 @@ impl State for Satellite {
         self.spacecraft.orbit.epoch
     }
 
+    fn observed(mut self, state: Self) -> Self {
+        self = state;
+        self.predicted = false;
+        self
+    }
+}
+
+impl Predictable for Satellite {
     fn predicted(&self) -> bool {
         self.predicted
     }
 
-    fn predict(mut self, step: Duration) -> Self {
-        self.predicted = true;
-        self
+    fn predictable(&self) -> bool {
+        // both epochs must remain synchronous
+        // that is, if the temporal state has been updated by a new measurement,
+        // the orbital state must advanced to the same instant
+        self.spacecraft.orbit.epoch == self.clock.epoch()
     }
 
-    fn observe(&mut self, state: Self) {}
+    fn predict(mut self, step: Duration) -> PhysicsResult<Self> {
+        self.predicted = true;
+        Ok(self)
+    }
 }

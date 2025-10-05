@@ -13,7 +13,7 @@ categories = ["science", "simulation"]
 keywords = ["geo", "navigation", "timing"]
 license = "AGPL-3.0-or-later"
 readme = "README.md"
-exclude = ["data/*"]
+exclude = ["data/*", "tools/*"]
 
 [workspace.dependencies]
 anise = "0.5"

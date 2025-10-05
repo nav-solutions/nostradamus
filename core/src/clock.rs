@@ -1,4 +1,4 @@
-use crate::prelude::{Duration, Epoch, State};
+use crate::prelude::{Duration, Epoch, PhysicsResult, Predictable, State};
 
 use anise::math::{Matrix3, Vector3};
 
@@ -61,7 +61,27 @@ impl State for Clock {
         }
     }
 
-    fn predict(mut self, step: Duration) -> Self {
+    fn observed(mut self, state: Self) -> Self {
+        self = state;
+        self.predicted = false;
+        self
+    }
+
+    fn epoch(&self) -> Epoch {
+        self.epoch
+    }
+}
+
+impl Predictable for Clock {
+    fn predictable(&self) -> bool {
+        true
+    }
+
+    fn predicted(&self) -> bool {
+        self.predicted
+    }
+
+    fn predict(mut self, step: Duration) -> PhysicsResult<Self> {
         let dt_s = step.to_seconds();
         self.epoch += step;
 
@@ -81,19 +101,7 @@ impl State for Clock {
         self.q[(2, 1)] = dt_s;
 
         self.predicted = true;
-        self
-    }
-
-    fn observe(&mut self, _: Self) {
-        self.predicted = false;
-    }
-
-    fn predicted(&self) -> bool {
-        self.predicted
-    }
-
-    fn epoch(&self) -> Epoch {
-        self.epoch
+        Ok(self)
     }
 }
 

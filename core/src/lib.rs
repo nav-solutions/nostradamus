@@ -5,20 +5,29 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 mod clock;
+mod observer;
 mod satellite;
+mod scenario;
 mod simulation;
 mod state;
-mod user;
 
 pub mod constants;
 
 pub mod prelude {
     pub use anise::{
+        astro::PhysicsResult,
         constants::frames::EARTH_J2000,
         prelude::{Almanac, Frame, Orbit},
     };
 
     pub use hifitime::prelude::{Duration, Epoch, TimeScale};
 
-    pub use crate::{clock::Clock, satellite::Satellite, simulation::Simulation, state::State};
+    pub use crate::{
+        clock::Clock,
+        observer::Observer,
+        satellite::Satellite,
+        scenario::Scenario,
+        simulation::Simulation,
+        state::{Predictable, State},
+    };
 }
