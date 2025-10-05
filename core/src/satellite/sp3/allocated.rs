@@ -1,6 +1,6 @@
 use crate::{
     errors::Error,
-    prelude::{Clock, Duration, Epoch, Orbit, Satellite, TimeScale, EARTH_J2000},
+    prelude::{Clock, Duration, Epoch, Orbit, Satellite, TimeAxis, TimeScale, EARTH_J2000},
     traits::{Scenario, State},
 };
 
@@ -15,10 +15,10 @@ pub struct SP3Scenario {
     /// Total number of states
     size: usize,
 
-    /// Sampling period
-    step: Duration,
+    /// [TimeAxis]
+    time_axis: TimeAxis,
 
-    /// Timescale
+    /// Reference [Timescale]
     timescale: TimeScale,
 
     /// pointer
@@ -40,7 +40,7 @@ impl SP3Scenario {
     ///
     /// ## Output
     /// - [SP3Scenario] on parsing success (yet it may be empty).
-    pub fn from_file(filename: &str, satellite: SV) -> Result<Self, SP3Error> {
+    pub fn from_file(filename: &str, satellite: SV) -> Result<Self, Error> {
         let sp3 = if filename.ends_with(".gz") {
             SP3::from_gzip_file(filename)
         } else {
@@ -48,6 +48,12 @@ impl SP3Scenario {
         };
 
         let mut sp3 = sp3?;
+
+        let first_epoch = sp3.first_epoch().ok_or(Error::UndefinedTimeAxis)?;
+
+        let last_epoch = sp3.last_epoch().ok_or(Error::UndefinedTimeAxis)?;
+
+        let time_axis = TimeAxis::new(first_epoch, last_epoch, sp3.header.sampling_period);
 
         // Makes sure this is OD compatible
         if !sp3.has_satellite_velocity() {
@@ -106,8 +112,8 @@ impl SP3Scenario {
             ptr: 0,
             size: satellites.len(),
             satellites,
-            step: sp3.header.sampling_period,
             timescale: sp3.header.timescale,
+            time_axis,
         })
     }
 }
@@ -126,10 +132,6 @@ impl Iterator for SP3Scenario {
 }
 
 impl Scenario for SP3Scenario {
-    fn step(&self) -> Duration {
-        self.step
-    }
-
     fn timescale(&self) -> TimeScale {
         self.timescale
     }
@@ -138,27 +140,11 @@ impl Scenario for SP3Scenario {
         self.size
     }
 
-    fn start(&self) -> Epoch {
-        self.satellites[0].epoch()
-    }
-
-    fn epoch(&self) -> Epoch {
-        self.satellites[self.ptr - 1].epoch()
-    }
-
-    fn end(&self) -> Epoch {
-        self.satellites[self.size() - 1].epoch()
+    fn time_axis(&self) -> TimeAxis {
+        self.time_axis
     }
 
     fn remaining_size(&self) -> usize {
         self.size - self.ptr
-    }
-
-    fn remaining_duration(&self) -> Duration {
-        if self.remaining_size() > 0 {
-            self.end() - self.satellites[self.ptr].epoch()
-        } else {
-            Duration::ZERO
-        }
     }
 }

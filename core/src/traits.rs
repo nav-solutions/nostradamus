@@ -1,4 +1,4 @@
-use crate::prelude::{Duration, Epoch, PhysicsResult, TimeScale};
+use crate::prelude::{Duration, Epoch, PhysicsResult, TimeAxis, TimeScale};
 
 /// [State] model
 pub trait State: Copy + Clone + PartialEq {
@@ -44,39 +44,16 @@ pub trait Predictable: State {
 
 /// A [Scenario] is a chronological serie of non-predictable [State]s.
 pub trait Scenario: Iterator {
-    /// Returns the constant step [Duration] of this [Scenario].
-    /// We do not support step variations currently
-    fn step(&self) -> Duration;
+    /// Returns [TimeAxis] definition
+    fn time_axis(&self) -> TimeAxis;
 
-    /// [TimeScale] to which this [Scenario] is referenced to and in which
-    /// it is expressed in. We do not supported varying [TimeScale]s.
+    /// [TimeScale] to which this [Scenario] and its [TimeAxis] are referenced
+    /// to and expressed in.
     fn timescale(&self) -> TimeScale;
-
-    /// First epoch of this [Scenario]
-    fn start(&self) -> Epoch;
-
-    /// Last epoch of this [Scenario]
-    fn end(&self) -> Epoch;
-
-    /// Current (latest) [Epoch]
-    fn epoch(&self) -> Epoch;
 
     /// Returns the total number of [State]s to be provided by this [Scenario].
     fn size(&self) -> usize;
 
     /// Returns number of remaining (unconsumed) [State]s in this [Scenario].
     fn remaining_size(&self) -> usize;
-
-    /// Returns remaining duration
-    fn remaining_duration(&self) -> Duration;
-
-    /// Total duration timewise of this [Scenario]
-    fn duration(&self) -> Duration {
-        self.end() - self.start()
-    }
-
-    /// Total duration elapsed since beginning ot this [Scenario]
-    fn elapsed(&self) -> Duration {
-        self.epoch() - self.start()
-    }
 }

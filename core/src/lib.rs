@@ -9,6 +9,7 @@ mod errors;
 mod observer;
 mod satellite;
 mod simulation;
+mod time_axis;
 mod traits;
 
 pub mod constants;
@@ -20,12 +21,12 @@ pub mod prelude {
         prelude::{Almanac, Frame, Orbit},
     };
 
-    pub use hifitime::prelude::{Duration, Epoch, TimeScale};
+    pub use hifitime::prelude::{Duration, Epoch, TimeScale, TimeSeries};
 
     pub use gnss_rs::prelude::{Constellation, SV};
 
     pub use crate::{
         clock::Clock, errors::*, observer::Observer, satellite::*, simulation::Simulation,
-        traits::*,
+        time_axis::TimeAxis, traits::*,
     };
 }
