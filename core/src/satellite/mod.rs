@@ -1,6 +1,8 @@
 use crate::{
     constants::EARTH_ANGULAR_VEL_DEG_S,
-    prelude::{Clock, Duration, Epoch, Frame, Orbit, PhysicsResult, EARTH_J2000},
+    prelude::{
+        Clock, Constellation, Duration, Epoch, Frame, Orbit, PhysicsResult, EARTH_J2000, SV,
+    },
     traits::*,
 };
 
@@ -8,20 +10,27 @@ use nyx_space::{md::prelude::GuidanceMode, Spacecraft};
 
 // SP3 scenarios (Satellites provider)
 #[cfg(feature = "sp3")]
+#[cfg_attr(docsrs, doc(cfg(feature = "sp3")))]
 mod sp3;
 
 #[cfg(feature = "sp3")]
+#[cfg_attr(docsrs, doc(cfg(feature = "sp3")))]
 pub use sp3::*;
 
 // RINEX scenarios (Satellites provider)
 #[cfg(feature = "rinex")]
+#[cfg_attr(docsrs, doc(cfg(feature = "rinex")))]
 mod rinex;
 
 #[cfg(feature = "rinex")]
+#[cfg_attr(docsrs, doc(cfg(feature = "rinex")))]
 pub use rinex::*;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Satellite {
+    /// Identity as [SV]
+    sv: SV,
+
     /// True when current state is predicted
     predicted: bool,
 
@@ -96,6 +105,7 @@ impl State for Satellite {
         let orbit = Orbit::from_position(0.0, 0.0, 0.0, epoch, EARTH_J2000); // TODO
 
         Self {
+            sv: SV::new(Constellation::GPS, 1),
             predicted: false,
             clock: Clock::default(epoch),
             spacecraft: Spacecraft::builder()
@@ -119,6 +129,7 @@ impl State for Satellite {
         let orbit = Orbit::from_position(0.0, 0.0, 0.0, epoch, EARTH_J2000); // TODO
 
         Self {
+            sv: SV::new(Constellation::GPS, 1),
             predicted: false,
             clock: Clock::random(epoch),
             spacecraft: Spacecraft::builder()

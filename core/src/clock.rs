@@ -40,6 +40,16 @@ pub struct Clock {
 }
 
 impl Clock {
+    /// Returns offset to reference [TimeScale] in seconds
+    pub fn offset_seconds(&self) -> f64 {
+        self.x[0]
+    }
+
+    /// Returns offset rate to reference [TimeScale], in seconds per second.
+    pub fn drift_seconds_sec(&self) -> f64 {
+        self.x[1]
+    }
+
     /// Creates a new [Clock] state from offset observation (in seconds)
     pub fn from_offset_measurement(epoch: Epoch, offset_s: f64) -> Self {
         let x = Vector3::new(offset_s, 0.0, 0.0); // TODO

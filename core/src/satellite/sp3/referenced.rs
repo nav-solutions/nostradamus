@@ -74,6 +74,7 @@ impl<'a> SP3ScenarioRef<'a> {
                     let clock = Clock::from_offset_measurement(k.epoch, v.clock_us.unwrap() * 1E-6);
 
                     Some(Satellite {
+                        sv: k.sv,
                         clock,
                         spacecraft,
                         predicted: false,

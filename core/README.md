@@ -22,6 +22,15 @@ It provides three main objects:
 </div>
 
 
+Library features
+================
+
+- `sp3` allows defining a `Scenario` from a text file easily (user input).
+On the other side, it allows to dump the generated states to SP3 states (text output).
+
+- `rinex` allows defining a `Scenario` from a text file easily (user input).
+On the other side, it allows to dump the generated states to RINEX files (text output).
+
 API
 ===
 
