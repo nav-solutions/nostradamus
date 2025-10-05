@@ -4,7 +4,7 @@ use crate::prelude::{Duration, Epoch, PhysicsResult};
 use crate::prelude::TimeScale;
 
 /// [State] model
-pub trait State: Copy + Clone {
+pub trait State: Copy + Clone + PartialEq {
     /// Generates a default yet physically correct [State].
     fn default(epoch: Epoch) -> Self;
 
@@ -43,4 +43,16 @@ pub trait Predictable: State {
         *self = self.predict(step)?;
         Ok(())
     }
+}
+
+/// A [Scenario] is a chronological serie of non-predictable [State]s.
+pub trait Scenario<S: State>: Iterator {
+    /// Returns the total number of [State]s to be provided by this [Scenario]
+    fn size(&self) -> usize;
+
+    /// Insert a new [State] into this [Scenario] (builder helper)
+    fn insert(&mut self, state: S);
+
+    /// Adds a new [State] to this [Scenario] returning a new [Scenario]
+    fn with_state(self, state: S) -> Self;
 }

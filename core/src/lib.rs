@@ -7,9 +7,10 @@
 mod clock;
 mod observer;
 mod satellite;
-mod scenario;
+// mod scenario;
+mod errors;
 mod simulation;
-mod state;
+mod traits;
 
 pub mod constants;
 
@@ -23,11 +24,7 @@ pub mod prelude {
     pub use hifitime::prelude::{Duration, Epoch, TimeScale};
 
     pub use crate::{
-        clock::Clock,
-        observer::Observer,
-        satellite::Satellite,
-        scenario::Scenario,
-        simulation::Simulation,
-        state::{Predictable, State},
+        clock::Clock, errors::*, observer::Observer, satellite::Satellite, simulation::Simulation,
+        traits::*,
     };
 }

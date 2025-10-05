@@ -1,11 +1,17 @@
 use crate::{
     constants::EARTH_ANGULAR_VEL_DEG_S,
-    prelude::{
-        Clock, Duration, Epoch, Frame, Orbit, PhysicsResult, Predictable, State, EARTH_J2000,
-    },
+    prelude::{Clock, Duration, Epoch, Frame, Orbit, PhysicsResult, EARTH_J2000},
+    traits::*,
 };
 
 use nyx_space::{md::prelude::GuidanceMode, Spacecraft};
+
+// SP3 scenarios (Satellites provider)
+#[cfg(feature = "sp3")]
+mod sp3;
+
+#[cfg(feature = "sp3")]
+pub use sp3::*;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Satellite {

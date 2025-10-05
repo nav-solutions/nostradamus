@@ -1,4 +1,7 @@
-use crate::prelude::{Clock, Epoch, Orbit, State, EARTH_J2000};
+use crate::{
+    prelude::{Clock, Epoch, Orbit, State, EARTH_J2000},
+    traits::*,
+};
 
 /// Ground based [Observer], can be either moving (also refered to as "rover" in this case)
 /// or static (also referred to as "ground-station" in this case).

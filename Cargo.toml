@@ -19,9 +19,10 @@ exclude = ["data/*", "tools/*"]
 anise = "0.5"
 hifitime = "4"
 gnss-rs = "2.5"
-sp3 = "1.4"
-rinex = "0.21"
 nyx-space = "2.1"
+thiserror = "1"
+rinex = { version = "0.21", features = ["flate2", "nav"] }
+sp3 = { version = "1.4", features = ["flate2", "nyx-space"] }
 nostradamus-core = { version = "0.0.1-alpha", path = "core" }
 
 [profile.release]
