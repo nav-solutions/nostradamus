@@ -1,7 +1,7 @@
 use crate::{
     errors::Error,
     prelude::{Clock, Orbit, Satellite, EARTH_J2000},
-    traits::Scenario,
+    traits::{Scenario, State},
 };
 
 use sp3::prelude::{Error as SP3Error, SP3, SV};
@@ -10,37 +10,54 @@ use anise::math::Vector6;
 
 use nyx_space::{cosmic::GuidanceMode, Spacecraft};
 
-/// [SP3Scenario] allows loading [Scenario]s from SP3 text file easily.
-pub struct SP3Scenario<'a> {
-    /// [Satellite] states provider
-    iter: Box<dyn Iterator<Item = Satellite> + 'a>,
+/// [SP3Scenario] allows loading and pre-allocating a [Scenario] from an SP3 text file easily.
+pub struct SP3Scenario {
+    /// Total number of states
+    size: usize,
+
+    /// pointer
+    ptr: usize,
+
+    /// Collected [Satellite] states
+    satellites: Vec<Satellite>,
 }
 
-impl<'a> SP3Scenario<'a> {
-    /// Deploys an [SP3Scenario] from parsed [SP3] object.
+impl SP3Scenario {
+    /// Loads an [SP3Scenario] from parsed [SP3] object.
     ///
     /// ## Input
-    /// - sp3: parsed [SP3] which must be OD compatible.
+    /// - filename: readable SP3 fullpath. Gzip compressed files
+    /// are supported but they must be terminated with ".gz".
     ///
     /// - satellite: specific filter, the scenario will only provide
     /// data for this spacecraft.
     ///
     /// ## Output
     /// - [SP3Scenario] on parsing success (yet it may be empty).
-    pub fn from_sp3(sp3: &'a SP3, satellite: &'a SV) -> Result<Self, Error> {
+    pub fn from_file(filename: &str, satellite: SV) -> Result<Self, SP3Error> {
+        let sp3 = if filename.ends_with(".gz") {
+            SP3::from_gzip_file(filename)
+        } else {
+            SP3::from_file(filename)
+        };
+
+        let mut sp3 = sp3?;
+
+        // Makes sure this is OD compatible
         if !sp3.has_satellite_velocity() {
-            // OD requires dynamics
-            return Err(Error::ODIncompatible);
+            sp3.resolve_dynamics_mut();
         }
 
         // This will drop predicted sallites.
         // Both temporal and orbital states must be provided.
         // Restrict to selected satellite
-        Ok(Self {
-            iter: Box::new(sp3.data.iter().filter_map(|(k, v)| {
+        let satellites = sp3
+            .data
+            .iter()
+            .filter_map(|(k, v)| {
                 // although file may be generally compatible,
                 // we still need to check each observation remains OD compatible
-                if k.sv == *satellite
+                if k.sv == satellite
                     && !v.predicted_clock
                     && !v.predicted_orbit
                     && !v.maneuver
@@ -75,15 +92,45 @@ impl<'a> SP3Scenario<'a> {
                 } else {
                     None
                 }
-            })),
+            })
+            .collect::<Vec<_>>();
+
+        Ok(Self {
+            ptr: 0,
+            size: satellites.len(),
+            satellites,
         })
     }
 }
 
-impl Iterator for SP3Scenario<'_> {
+impl Iterator for SP3Scenario {
     type Item = Satellite;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.iter.next()
+        if self.ptr < self.size - 1 {
+            None
+        } else {
+            self.ptr += 1;
+            Some(self.satellites[self.ptr - 1])
+        }
+    }
+}
+
+impl<S: State> Scenario<S> for SP3Scenario {
+    fn size(&self) -> usize {
+        self.size
+    }
+
+    fn remaining(&self) -> usize {
+        self.size - self.ptr
+    }
+
+    fn insert(&mut self, state: S) {
+        // TODO
+    }
+
+    fn with_state(mut self, state: S) -> Self {
+        // TODO
+        self
     }
 }

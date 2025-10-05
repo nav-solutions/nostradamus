@@ -47,8 +47,11 @@ pub trait Predictable: State {
 
 /// A [Scenario] is a chronological serie of non-predictable [State]s.
 pub trait Scenario<S: State>: Iterator {
-    /// Returns the total number of [State]s to be provided by this [Scenario]
+    /// Returns the total number of [State]s to be provided by this [Scenario].
     fn size(&self) -> usize;
+
+    /// Returns number of remaining (unconsumed) [State]s in this [Scenario].
+    fn remaining(&self) -> usize;
 
     /// Insert a new [State] into this [Scenario] (builder helper)
     fn insert(&mut self, state: S);

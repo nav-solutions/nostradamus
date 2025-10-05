@@ -5,10 +5,9 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 mod clock;
+mod errors;
 mod observer;
 mod satellite;
-// mod scenario;
-mod errors;
 mod simulation;
 mod traits;
 
