@@ -14,7 +14,6 @@ env:
 
 jobs:
   build:
-  build:
     name: Build 
     runs-on: ubuntu-latest
     steps:

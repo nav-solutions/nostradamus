@@ -1,4 +1,7 @@
-use crate::prelude::{Duration, Epoch, PhysicsResult, Predictable, State};
+use crate::{
+    prelude::{Duration, Epoch, PhysicsResult},
+    traits::*,
+};
 
 use anise::math::{Matrix3, Vector3};
 
@@ -34,6 +37,25 @@ pub struct Clock {
 
     /// True when current state is predicted
     predicted: bool,
+}
+
+impl Clock {
+    /// Creates a new [Clock] state from offset observation (in seconds)
+    pub fn from_offset_measurement(epoch: Epoch, offset_s: f64) -> Self {
+        let x = Vector3::new(offset_s, 0.0, 0.0); // TODO
+        Self {
+            epoch,
+            predicted: false,
+            estimate: Estimate {
+                p: Matrix3::identity(),
+                x,
+            },
+            x,
+            stm: Matrix3::identity(),
+            q: Matrix3::identity(),
+            p: Matrix3::identity(),
+        }
+    }
 }
 
 impl State for Clock {

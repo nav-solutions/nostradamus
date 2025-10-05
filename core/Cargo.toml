@@ -18,12 +18,19 @@ rustdoc-ars = ["--cfg", "docrs", "--generate-link-to-definition"]
 msrv = "1.83"
 
 [features]
-default = ["dep:rinex", "dep:sp3"] # rinex and SP3 preset by default
+default = ["rinex", "sp3"] # rinex and SP3 presets by default
+
+# SP3 preset and scenarios from text file
+sp3 = ["dep:sp3"]
+
+# RINEX preset and scenarios from text file
+rinex = ["dep:rinex"]
 
 [dependencies]
 anise = { workspace = true }
 gnss-rs = { workspace = true }
 hifitime = { workspace = true }
 nyx-space = { workspace = true }
+thiserror = { workspace = true }
 sp3 = { workspace = true, optional = true }
 rinex = { workspace = true, optional = true }
