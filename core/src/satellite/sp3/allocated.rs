@@ -92,6 +92,7 @@ impl SP3Scenario {
 
                     Some(Satellite {
                         clock,
+                        sv: k.sv,
                         spacecraft,
                         predicted: false,
                     })
