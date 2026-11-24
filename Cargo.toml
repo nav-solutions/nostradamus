@@ -16,13 +16,12 @@ readme = "README.md"
 exclude = ["data/*", "tools/*"]
 
 [workspace.dependencies]
-anise = "0.5"
+anise = "0.10"
 hifitime = "4"
-gnss-rs = "2.5"
-nyx-space = "2.1"
+gnss-rs = "2"
+nyx-space = "2"
 thiserror = "1"
-rinex = { version = "0.21", features = ["flate2", "nav"] }
-sp3 = { version = "1.4", features = ["flate2", "nyx-space"] }
+gnss-qc = "0.6"
 nostradamus-core = { version = "0.0.1-alpha", path = "core" }
 
 [profile.release]
